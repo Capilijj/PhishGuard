@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishGuard — Verify Your Account</title>
+  <link rel="stylesheet" href="{% static 'Login/login.css' %}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="pg-scanlines"></div>
+  <div class="pg-grid"></div>
+
+  <main class="pg-main">
+    <div class="pg-panel">
+      <span class="pg-corner pg-corner--tl"></span>
+      <span class="pg-corner pg-corner--tr"></span>
+      <span class="pg-corner pg-corner--bl"></span>
+      <span class="pg-corner pg-corner--br"></span>
+
+      <div class="pg-logo">
+        <h1 class="pg-logo__title pg-logo__title--sm">VERIFY YOUR ACCOUNT</h1>
+        <p class="pg-logo__sub">Transmission standing by, Agent.</p>
+      </div>
+
+      <!-- Icon -->
+      <div style="text-align:center; margin: 1.5rem 0 1rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24"
+          fill="none" stroke="var(--pg-green)" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round"
+          style="filter: drop-shadow(0 0 8px var(--pg-green));">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+      </div>
+
+      {% if message %}
+      <div class="pg-success" style="text-align:center;">✔ {{ message }}</div>
+      {% endif %}
+
+      {% if error %}
+      <div class="pg-alert">⚡ {{ error }}</div>
+      {% endif %}
+
+      <div style="
+        background: rgba(0,255,65,.04);
+        border: 1px solid var(--pg-border);
+        border-left: 3px solid var(--pg-green);
+        padding: 1rem 1.2rem;
+        margin: .5rem 0 1.4rem;
+        font-family: var(--pg-font-mono);
+        font-size: .75rem;
+        color: var(--pg-text);
+        line-height: 1.8;
+        letter-spacing: .03em;
+      ">
+        {% if masked_email %}
+          A verification link has been transmitted to:<br/>
+          <span style="color:var(--pg-green); font-weight:600;">{{ masked_email }}</span><br/><br/>
+        {% endif %}
+        Click the link in your email to activate your account.<br/>
+        The link expires in <span style="color:var(--pg-cyan);">24 hours</span>.
+      </div>
+
+      <p style="
+        font-family: var(--pg-font-mono);
+        font-size: .68rem;
+        color: var(--pg-text-dim);
+        text-align: center;
+        margin-bottom: 1rem;
+        letter-spacing: .04em;
+      ">
+        Didn't receive it? Check your spam folder, or resend below.
+      </p>
+
+      <!-- Resend form -->
+      <form method="post" action="{% url 'verify_resend' %}" style="margin-bottom:.8rem;">
+        {% csrf_token %}
+        <div class="pg-field">
+          <label class="pg-label" for="resend_email">RESEND TO EMAIL</label>
+          <div class="pg-input-wrap">
+            <input class="pg-input" type="email" id="resend_email" name="email"
+              placeholder="agent@domain.com"
+              {% if masked_email %}value=""{% endif %}
+              autocomplete="off"/>
+          </div>
+        </div>
+        <button class="pg-btn pg-btn--outline" type="submit"
+          style="width:100%; margin-bottom:.6rem;">
+          ↺ RESEND VERIFICATION LINK
+        </button>
+      </form>
+
+      <a href="{% url 'login' %}" class="pg-btn pg-btn--outline pg-btn--link">← BACK TO LOGIN</a>
+
+      <p class="pg-warning" style="margin-top:1.2rem;">
+        YOUR ACCOUNT WILL NOT BE ACTIVE UNTIL VERIFIED
+      </p>
+    </div>
+  </main>
+
+</body>
+</html>

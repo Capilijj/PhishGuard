@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishGuard — Terms of Operation</title>
+  <link rel="stylesheet" href="{% static 'Login/login.css' %}"/>
+  <link rel="stylesheet" href="{% static 'Login/terms.css' %}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="pg-scanlines"></div>
+  <div class="pg-grid"></div>
+
+  <main class="tc-main">
+    <div class="tc-container">
+
+      <!-- Header -->
+      <div class="tc-header">
+        <div class="tc-logo">PHISHGUARD</div>
+        <div class="tc-doc-label">// CLASSIFIED DOCUMENT — AGENT CLEARANCE REQUIRED</div>
+        <h1 class="tc-title">TERMS OF OPERATION</h1>
+        <p class="tc-subtitle">Read carefully before enrolling, Agent. These terms govern your access to the PhishGuard system.</p>
+        <div class="tc-meta">
+          <span>DOCUMENT VERSION: 1.0</span>
+          <span>EFFECTIVE DATE: MARCH 2026</span>
+          <span>CLASSIFICATION: INTERNAL</span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="tc-divider"></div>
+
+      <!-- Section 1 -->
+      <div class="tc-section">
+        <div class="tc-section-num">01</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">ACCEPTANCE OF TERMS</h2>
+          <p class="tc-text">
+            By creating an agent account and accessing the PhishGuard platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Operation. If you do not agree with any part of these terms, you must not access or use this system.
+          </p>
+          <p class="tc-text">
+            These terms apply to all users of the PhishGuard simulation platform, including agents enrolled in phishing awareness training programs, administrators, and any personnel with system access.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="tc-section">
+        <div class="tc-section-num">02</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">PURPOSE OF THE SYSTEM</h2>
+          <p class="tc-text">
+            PhishGuard is an educational cybersecurity awareness platform designed to train agents in identifying and responding to phishing attacks. All simulations, scenarios, and exercises within the platform are conducted strictly for educational and training purposes.
+          </p>
+          <div class="tc-highlight">
+            ⚠ PhishGuard simulations are for educational use only. Any attempt to use knowledge gained from this platform for malicious purposes is strictly prohibited and may result in legal action.
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="tc-section">
+        <div class="tc-section-num">03</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">AGENT ACCOUNT RESPONSIBILITIES</h2>
+          <p class="tc-text">As a registered agent, you agree to the following:</p>
+          <ul class="tc-list">
+            <li>Your agent codename must be unique and must not impersonate another person or entity.</li>
+            <li>You are solely responsible for maintaining the confidentiality of your security code (password).</li>
+            <li>You must not share your account credentials with any other person.</li>
+            <li>You must immediately notify the system administrator if you suspect unauthorized access to your account.</li>
+            <li>You are responsible for all activities that occur under your agent account.</li>
+            <li>You must provide a valid and accurate email address during registration.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="tc-section">
+        <div class="tc-section-num">04</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">ACCEPTABLE USE POLICY</h2>
+          <p class="tc-text">You agree that you will NOT use the PhishGuard platform to:</p>
+          <ul class="tc-list tc-list--red">
+            <li>Conduct actual phishing attacks against real individuals or organizations outside of authorized simulations.</li>
+            <li>Attempt to gain unauthorized access to system resources, databases, or other user accounts.</li>
+            <li>Distribute, reproduce, or share any simulation materials, phishing templates, or training content outside the platform.</li>
+            <li>Interfere with or disrupt the integrity or performance of the platform.</li>
+            <li>Use the platform for any commercial purpose without prior written authorization.</li>
+            <li>Upload or transmit any malicious code, viruses, or harmful software.</li>
+            <li>Harass, threaten, or intimidate other users of the platform.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="tc-section">
+        <div class="tc-section-num">05</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">DATA COLLECTION AND PRIVACY</h2>
+          <p class="tc-text">
+            PhishGuard collects and stores the following information for the purpose of operating the platform:
+          </p>
+          <ul class="tc-list">
+            <li><span class="tc-data-label">Agent Codename</span> — used as your unique identifier within the system.</li>
+            <li><span class="tc-data-label">Email Address</span> — used for account recovery and system notifications.</li>
+            <li><span class="tc-data-label">Password</span> — stored as a one-way cryptographic hash. Never stored in plain text.</li>
+            <li><span class="tc-data-label">Simulation Results</span> — training scores, completed modules, and performance data.</li>
+            <li><span class="tc-data-label">Login Activity</span> — session data and access logs for security monitoring.</li>
+          </ul>
+          <p class="tc-text">
+            Your data will not be sold, rented, or shared with third parties without your consent, except as required by law or for the purposes of operating and improving the PhishGuard platform.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="tc-section">
+        <div class="tc-section-num">06</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">SIMULATION PARTICIPATION</h2>
+          <p class="tc-text">
+            As part of your training, you may receive simulated phishing emails, messages, or other security tests. By agreeing to these terms, you consent to receiving such simulations as part of the training program.
+          </p>
+          <div class="tc-highlight">
+            ✔ All phishing simulations you receive are controlled, safe, and part of your training. No real harm will result from interacting with simulation content.
+          </div>
+          <p class="tc-text">
+            Your responses to simulations will be recorded and used to measure your phishing awareness progress. Results are used solely for educational purposes and performance tracking.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="tc-section">
+        <div class="tc-section-num">07</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">ACCOUNT SUSPENSION AND TERMINATION</h2>
+          <p class="tc-text">
+            PhishGuard administrators reserve the right to suspend or terminate your agent account at any time, with or without notice, for the following reasons:
+          </p>
+          <ul class="tc-list tc-list--red">
+            <li>Violation of any provision of these Terms of Operation.</li>
+            <li>Suspected fraudulent, abusive, or illegal activity.</li>
+            <li>Inactivity for an extended period as determined by the administrator.</li>
+            <li>Completion or withdrawal from the training program.</li>
+          </ul>
+          <p class="tc-text">
+            Upon termination, your access to the platform will be immediately revoked. Your data may be retained for audit and compliance purposes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="tc-section">
+        <div class="tc-section-num">08</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">INTELLECTUAL PROPERTY</h2>
+          <p class="tc-text">
+            All content, materials, simulations, training modules, and resources available on the PhishGuard platform are the intellectual property of the PhishGuard development team. You may not copy, modify, distribute, or reproduce any platform content without prior written permission.
+          </p>
+          <p class="tc-text">
+            Your agent codename, profile data, and simulation results remain your personal data. However, anonymized and aggregated data may be used to improve the platform.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 9 -->
+      <div class="tc-section">
+        <div class="tc-section-num">09</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">DISCLAIMER OF WARRANTIES</h2>
+          <p class="tc-text">
+            The PhishGuard platform is provided on an "as is" and "as available" basis for educational purposes. While we strive to maintain system availability and accuracy, we make no warranties, express or implied, regarding:
+          </p>
+          <ul class="tc-list">
+            <li>The uninterrupted or error-free operation of the platform.</li>
+            <li>The accuracy, completeness, or reliability of simulation content.</li>
+            <li>The fitness of the platform for any particular purpose beyond educational training.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 10 -->
+      <div class="tc-section">
+        <div class="tc-section-num">10</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">CHANGES TO TERMS</h2>
+          <p class="tc-text">
+            PhishGuard reserves the right to modify these Terms of Operation at any time. Changes will be communicated through the platform or via email. Your continued use of the platform after any changes constitutes your acceptance of the new terms.
+          </p>
+          <p class="tc-text">
+            It is your responsibility to review these terms periodically to stay informed of any updates.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 11 -->
+      <div class="tc-section">
+        <div class="tc-section-num">11</div>
+        <div class="tc-section-body">
+          <h2 class="tc-section-title">CONTACT AND SUPPORT</h2>
+          <p class="tc-text">
+            If you have questions, concerns, or need support regarding these Terms of Operation or the PhishGuard platform, please contact the system administrator through the official channels provided by your institution.
+          </p>
+          <div class="tc-highlight">
+            For security incidents or suspected unauthorized access, report immediately to your system administrator. Do not attempt to investigate on your own.
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="tc-divider"></div>
+
+      <!-- Footer -->
+      <div class="tc-footer">
+        <p class="tc-footer-text">
+          By proceeding with agent registration, you confirm that you are at least 18 years of age, have read and understood these Terms of Operation in their entirety, and agree to be bound by all provisions stated herein.
+        </p>
+        <div class="tc-footer-actions">
+          <a href="{% url 'register' %}" class="tc-btn tc-btn--accept">
+            ✔ I ACCEPT — PROCEED TO REGISTRATION
+          </a>
+          <a href="{% url 'login' %}" class="tc-btn tc-btn--decline">
+            ✗ DECLINE — BACK TO LOGIN
+          </a>
+        </div>
+        <p class="tc-footer-copy">
+          PHISHGUARD SYSTEM — DOCUMENT REF: PG-TOS-v1.0 — MARCH 2026
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>

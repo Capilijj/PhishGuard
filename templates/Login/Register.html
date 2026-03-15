@@ -1,0 +1,248 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishGuard Agent Creation</title>
+  <link rel="stylesheet" href="{% static 'Login/login.css' %}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="pg-scanlines"></div>
+  <div class="pg-grid"></div>
+
+  <!-- ══════════════ TERMS MODAL ══════════════ -->
+  <div class="tos-overlay" id="tosOverlay">
+    <div class="tos-modal">
+      <!-- X Close button -->
+      <button type="button" class="tos-close" id="tosClose" title="Close">✕</button>
+      <span class="pg-corner pg-corner--tl"></span>
+      <span class="pg-corner pg-corner--tr"></span>
+      <span class="pg-corner pg-corner--bl"></span>
+      <span class="pg-corner pg-corner--br"></span>
+
+      <div class="tos-header">
+        <div class="tos-logo">PHISHGUARD</div>
+        <div class="tos-doc-tag">// CLASSIFIED DOCUMENT — AGENT CLEARANCE REQUIRED</div>
+        <h2 class="tos-title">TERMS OF OPERATION</h2>
+        <p class="tos-subtitle">Read carefully before enrolling, Agent.</p>
+      </div>
+
+      <div class="tos-body">
+
+        <div class="tos-section">
+          <div class="tos-num">01</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">ACCEPTANCE OF TERMS</h3>
+            <p class="tos-text">By creating an agent account and accessing the PhishGuard platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Operation. If you do not agree, you must not access or use this system.</p>
+            <p class="tos-text">These terms apply to all users of the PhishGuard simulation platform, including agents enrolled in phishing awareness training programs, administrators, and any personnel with system access.</p>
+          </div>
+        </div>
+
+        <div class="tos-section">
+          <div class="tos-num">02</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">PURPOSE OF THE SYSTEM</h3>
+            <p class="tos-text">PhishGuard is an educational cybersecurity awareness platform designed to train agents in identifying and responding to phishing attacks. All simulations, scenarios, and exercises within the platform are conducted strictly for educational and training purposes.</p>
+            <div class="tos-highlight">⚠ PhishGuard simulations are for educational use only. Any attempt to use knowledge gained from this platform for malicious purposes is strictly prohibited and may result in legal action.</div>
+          </div>
+        </div>
+
+        <div class="tos-section">
+          <div class="tos-num">03</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">AGENT ACCOUNT RESPONSIBILITIES</h3>
+            <p class="tos-text">As a registered agent, you agree to the following:</p>
+            <ul class="tos-list">
+              <li>Your agent codename must be unique and must not impersonate another person or entity.</li>
+              <li>You are solely responsible for maintaining the confidentiality of your security code.</li>
+              <li>You must not share your account credentials with any other person.</li>
+              <li>You must immediately notify the system administrator if you suspect unauthorized access.</li>
+              <li>You are responsible for all activities that occur under your agent account.</li>
+              <li>You must provide a valid and accurate email address during registration.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tos-section">
+          <div class="tos-num">04</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">ACCEPTABLE USE POLICY</h3>
+            <p class="tos-text">You agree that you will NOT use the PhishGuard platform to:</p>
+            <ul class="tos-list tos-list--red">
+              <li>Conduct actual phishing attacks against real individuals or organizations outside of authorized simulations.</li>
+              <li>Attempt to gain unauthorized access to system resources, databases, or other user accounts.</li>
+              <li>Distribute, reproduce, or share any simulation materials outside the platform.</li>
+              <li>Interfere with or disrupt the integrity or performance of the platform.</li>
+              <li>Use the platform for any commercial purpose without prior written authorization.</li>
+              <li>Upload or transmit any malicious code, viruses, or harmful software.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tos-section">
+          <div class="tos-num">05</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">DATA COLLECTION AND PRIVACY</h3>
+            <p class="tos-text">PhishGuard collects and stores the following information:</p>
+            <ul class="tos-list">
+              <li><span class="tos-tag">CODENAME</span> — used as your unique identifier within the system.</li>
+              <li><span class="tos-tag">EMAIL</span> — used for account recovery and system notifications.</li>
+              <li><span class="tos-tag">PASSWORD</span> — stored as a one-way cryptographic hash. Never stored in plain text.</li>
+              <li><span class="tos-tag">SIMULATION RESULTS</span> — training scores, completed modules, and performance data.</li>
+              <li><span class="tos-tag">LOGIN ACTIVITY</span> — session data and access logs for security monitoring.</li>
+            </ul>
+            <p class="tos-text">Your data will not be sold, rented, or shared with third parties without your consent, except as required by law.</p>
+          </div>
+        </div>
+
+        <div class="tos-section">
+          <div class="tos-num">06</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">SIMULATION PARTICIPATION</h3>
+            <p class="tos-text">As part of your training, you may receive simulated phishing emails, messages, or other security tests. By agreeing to these terms, you consent to receiving such simulations as part of the training program.</p>
+            <div class="tos-highlight tos-highlight--green">✔ All phishing simulations are controlled and safe. No real harm will result from interacting with simulation content.</div>
+          </div>
+        </div>
+
+        <div class="tos-section">
+          <div class="tos-num">07</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">ACCOUNT SUSPENSION AND TERMINATION</h3>
+            <p class="tos-text">PhishGuard administrators reserve the right to suspend or terminate your agent account at any time for violation of these terms, suspected fraudulent activity, or extended inactivity.</p>
+            <p class="tos-text">Upon termination, your access to the platform will be immediately revoked. Your data may be retained for audit and compliance purposes.</p>
+          </div>
+        </div>
+
+        <div class="tos-section">
+          <div class="tos-num">08</div>
+          <div class="tos-content">
+            <h3 class="tos-section-title">CHANGES TO TERMS</h3>
+            <p class="tos-text">PhishGuard reserves the right to modify these Terms of Operation at any time. Your continued use of the platform after any changes constitutes your acceptance of the new terms.</p>
+          </div>
+        </div>
+
+      </div><!-- /.tos-body -->
+
+      <div class="tos-footer">
+        <p class="tos-footer-text">By proceeding with agent registration, you confirm that you have read and understood these Terms of Operation in their entirety.</p>
+        <div class="tos-actions">
+          <button type="button" class="tos-btn tos-btn--accept" id="tosAccept">✔ I ACCEPT</button>
+          <button type="button" class="tos-btn tos-btn--decline" id="tosDecline">✗ DECLINE</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ══════════════ END MODAL ══════════════ -->
+
+  <main class="pg-main">
+    <div class="pg-panel">
+      <span class="pg-corner pg-corner--tl"></span>
+      <span class="pg-corner pg-corner--tr"></span>
+      <span class="pg-corner pg-corner--bl"></span>
+      <span class="pg-corner pg-corner--br"></span>
+
+      <div class="pg-logo">
+        <h1 class="pg-logo__title pg-logo__title--sm">CREATE AGENT PROFILE</h1>
+        <p class="pg-logo__sub">Register your credentials, Agent.</p>
+      </div>
+
+      <form class="pg-form" method="post" action="{% url 'register' %}" id="createForm" novalidate>
+        {% csrf_token %}
+
+        {% if error %}
+        <div class="pg-alert">⚡ {{ error }}</div>
+        {% endif %}
+
+        <!-- CODENAME -->
+        <div class="pg-field">
+          <label class="pg-label" for="new_agent">CHOOSE CODENAME</label>
+          <div class="pg-input-wrap">
+            <input class="pg-input" type="text" id="new_agent" name="new_agent"
+              placeholder="ENTER CODENAME" autocomplete="off"
+              value="{{ form_data.new_agent|default:'' }}" required/>
+          </div>
+          <span class="pg-field-err" id="err_new_agent"></span>
+          <div class="pg-suggestions" id="codename_suggestions"></div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="pg-field">
+          <label class="pg-label" for="new_email">EMAIL ADDRESS</label>
+          <div class="pg-input-wrap">
+            <input class="pg-input" type="email" id="new_email" name="new_email"
+              placeholder="agent@domain.com" autocomplete="off"
+              value="{{ form_data.new_email|default:'' }}" required/>
+          </div>
+          <span class="pg-field-err" id="err_new_email"></span>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="pg-field">
+          <label class="pg-label" for="new_code">CREATE SECURITY CODE</label>
+          <div class="pg-input-wrap">
+            <input class="pg-input" type="password" id="new_code" name="new_code"
+              placeholder="MIN. 8 CHARACTERS" autocomplete="new-password" required/>
+            <button type="button" class="pg-eye" id="toggleNewPw" title="Show/Hide">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="pg-field-err" id="err_new_code"></span>
+        </div>
+
+        <!-- Password strength bar -->
+        <div class="pg-strength">
+          <div class="pg-strength__label">CODE STRENGTH: <span id="strengthText">—</span></div>
+          <div class="pg-strength__bar"><div class="pg-strength__fill" id="strengthFill"></div></div>
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="pg-field">
+          <label class="pg-label" for="confirm_code">CONFIRM SECURITY CODE</label>
+          <div class="pg-input-wrap">
+            <input class="pg-input" type="password" id="confirm_code" name="confirm_code"
+              placeholder="RE-ENTER CODE" autocomplete="new-password" required/>
+            <button type="button" class="pg-eye" id="toggleConfirmPw" title="Show/Hide">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="pg-field-err" id="err_confirm_code"></span>
+        </div>
+
+        <!-- Terms checkbox -->
+        <div class="pg-field pg-field--terms">
+          <label class="pg-terms-check">
+            <input type="checkbox" id="termsCheck" name="terms_accepted"/>
+            <span class="pg-check-box"></span>
+            <span class="pg-check-label">
+              I have read and accept the
+              <button type="button" class="pg-terms-link" id="openTos">
+                CLASSIFIED TERMS OF OPERATION
+              </button>
+            </span>
+          </label>
+          <span class="pg-field-err" id="err_terms"></span>
+        </div>
+
+        <button class="pg-btn pg-btn--primary" type="submit">CREATE ACCOUNT</button>
+        <a href="{% url 'login' %}" class="pg-btn pg-btn--outline pg-btn--link">← BACK TO LOGIN</a>
+      </form>
+    </div>
+
+    <div class="pg-toast pg-toast--hidden" id="pg-toast"></div>
+  </main>
+
+  <script src="{% static 'Login/register.js' %}"></script>
+</body>
+</html>

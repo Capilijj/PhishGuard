@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishGuard Agent Login</title>
+  <link rel="stylesheet" href="{% static 'Login/login.css' %}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="pg-scanlines"></div>
+  <div class="pg-grid"></div>
+
+  <main class="pg-main">
+    <div class="pg-panel">
+      <span class="pg-corner pg-corner--tl"></span>
+      <span class="pg-corner pg-corner--tr"></span>
+      <span class="pg-corner pg-corner--bl"></span>
+      <span class="pg-corner pg-corner--br"></span>
+
+      <!-- Logo -->
+      <div class="pg-logo">
+        <h1 class="pg-logo__title">PHISHGUARD</h1>
+        <p class="pg-logo__sub">Identify yourself, Agent.</p>
+      </div>
+
+      <!-- Django login form -->
+      <form class="pg-form" method="post" action="{% url 'login' %}" novalidate>
+        {% csrf_token %}
+
+        {% if error %}
+        <div class="pg-alert">⚡ {{ error }}</div>
+        {% endif %}
+
+        {% if message %}
+        <div class="pg-success">✔ {{ message }}</div>
+        {% endif %}
+
+        <div class="pg-field">
+          <label class="pg-label" for="id_username">AGENT NAME</label>
+          <div class="pg-input-wrap">
+            <input
+              class="pg-input{% if error %} pg-input--error{% endif %}"
+              type="text"
+              id="id_username"
+              name="username"
+              placeholder="ENTER CODENAME"
+              autocomplete="off"
+              autofocus
+              required
+            />
+          </div>
+          <span class="pg-field-err" id="err_username"></span>
+        </div>
+
+        <div class="pg-field">
+          <label class="pg-label" for="id_password">SECURITY CODE</label>
+          <div class="pg-input-wrap">
+            <input
+              class="pg-input{% if error %} pg-input--error{% endif %}"
+              type="password"
+              id="id_password"
+              name="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="pg-eye" id="togglePw" title="Show/Hide">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="pg-field-err" id="err_password"></span>
+        </div>
+
+        <button class="pg-btn pg-btn--primary" type="submit">LOGIN</button>
+
+        <div class="pg-forgot-row">
+          <a class="pg-forgot-link" href="{% url 'forgot_password' %}">&gt;&gt; FORGOT PASSWORD? &lt;&lt;</a>
+        </div>
+
+        <a href="{% url 'register' %}" class="pg-btn pg-btn--outline pg-btn--link">CREATE ACCOUNT</a>
+
+        <p class="pg-warning">UNAUTHORIZED ACCESS IS STRICTLY PROHIBITED</p>
+      </form>
+    </div>
+
+    <div class="pg-toast pg-toast--hidden" id="pg-toast"></div>
+  </main>
+
+  <script src="{% static 'Login/login.js' %}"></script>
+</body>
+</html>
