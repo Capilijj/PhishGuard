@@ -1,24 +1,263 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Home</title>
-    <!-- Prevent browser caching — back button forces server check -->
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0"/>
-    <meta http-equiv="Pragma" content="no-cache"/>
-    <meta http-equiv="Expires" content="0"/>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f2f2f2; }
-        .content { max-width: 600px; margin: 100px auto; padding: 30px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-        h1 { text-align: center; }
-        a.button { display: inline-block; margin: 16px auto; padding: 8px 16px; background: #e53935; color: white; text-decoration: none; border-radius: 4px; }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishGuard — Agent Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{% static 'homepage/home.css' %}"/>
 </head>
 <body>
-    <div class="content">
-        <h1>Welcome to Home</h1>
-        <p>This page is protected for logged-in users.</p>
-        <p><a href="/logout/" class="button">Logout</a></p>
+
+  <div class="pg-scanlines"></div>
+  <div class="pg-grid"></div>
+
+  <!-- ══════════════ HEADER ══════════════ -->
+  <header class="pg-header">
+
+    <div class="pg-header__logo">
+      <div class="pg-header__logo-title">PHISHGUARD</div>
+      <div class="pg-header__logo-sub">STATION 01</div>
     </div>
+
+    <div class="pg-header__divider"></div>
+
+    <div class="pg-header__level">
+      <div class="pg-header__level-label">
+        <span>CLEARANCE</span>
+        <span class="pg-header__level-num">LVL {{ agent_level|default:"1" }}</span>
+      </div>
+      <div class="pg-header__xp-bar">
+        <div class="pg-header__xp-fill" id="xpFill" style="width:{{ xp_percent|default:'0' }}%"></div>
+      </div>
+      <div class="pg-header__xp-text">{{ xp_current|default:"0" }} / {{ xp_next|default:"1000" }} XP</div>
+    </div>
+
+    <div class="pg-header__spacer"></div>
+
+    <nav class="pg-header__nav">
+      <a class="pg-header__nav-link pg-header__nav-link--active" href="{% url 'home' %}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        HOME
+      </a>
+      <a class="pg-header__nav-link" href="#">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/>
+        </svg>
+        RANKS
+      </a>
+      {% if role|lower == 'admin' %}
+      <a class="pg-header__nav-link pg-header__nav-link--admin" href="{% url 'admin_dashboard' %}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+        ADMIN
+      </a>
+      {% endif %}
+    </nav>
+
+    <div class="pg-header__divider"></div>
+
+    <div class="pg-header__agent">
+      <div class="pg-header__agent-avatar">
+        {{ username|slice:":1"|upper|default:"A" }}
+      </div>
+      <div>
+        <span class="pg-header__agent-name">{{ username|upper|default:"AGENT" }}</span>
+        <span class="pg-header__agent-role">{{ role|upper|default:"PLAYER" }}</span>
+      </div>
+    </div>
+
+    <a class="pg-header__logout" href="{% url 'logout' %}">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      LOGOUT
+    </a>
+
+  </header>
+
+  <!-- ══════════════ MAIN ══════════════ -->
+  <main class="pg-main">
+
+    <!-- PLAY BANNER -->
+    <div class="pg-banner">
+      <div class="pg-banner__text">
+        <h2>READY TO CATCH SCAMMERS?</h2>
+        <p>Stop the hackers from entering the gate, Agent.</p>
+      </div>
+      <a class="pg-btn-play" href="#">&#9654; PLAY NOW</a>
+    </div>
+
+    <!-- STATS -->
+    <div class="pg-section-label">AGENT PERFORMANCE</div>
+    <div class="pg-stats">
+      <div class="pg-stat pg-stat--green">
+        <div class="pg-stat__value">{{ accuracy|default:"0" }}%</div>
+        <div class="pg-stat__label">AIM ACCURACY</div>
+      </div>
+      <div class="pg-stat pg-stat--cyan">
+        <div class="pg-stat__value">{{ safe_count|default:"0" }}</div>
+        <div class="pg-stat__label">THREATS NEUTRALISED</div>
+      </div>
+      <div class="pg-stat pg-stat--red">
+        <div class="pg-stat__value">{{ fail_count|default:"0" }}</div>
+        <div class="pg-stat__label">INTEL FAILURES</div>
+      </div>
+      <div class="pg-stat pg-stat--yellow">
+        <div class="pg-stat__value">{{ avg_time|default:"—" }}</div>
+        <div class="pg-stat__label">AVG RESPONSE TIME</div>
+      </div>
+    </div>
+
+    <!-- MISSIONS -->
+    <div class="pg-section-label">SELECT MISSION</div>
+    <div class="pg-missions">
+
+      <a class="pg-mission pg-mission--green" href="#">
+        <div class="pg-mission__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+        </div>
+        <div class="pg-mission__name">EMAIL DETECTOR</div>
+        <div class="pg-mission__desc">Spot the fake emails from boss. Analyze headers, links, and sender patterns to identify phishing attempts.</div>
+        <div class="pg-mission__lvl">LVL 1</div>
+      </a>
+
+      <a class="pg-mission pg-mission--yellow" href="#">
+        <div class="pg-mission__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <circle cx="8" cy="12" r="2"/>
+            <path d="M14 9h4M14 12h4M14 15h2"/>
+          </svg>
+        </div>
+        <div class="pg-mission__name">ID SCANNER</div>
+        <div class="pg-mission__desc">Scan visitor cards for forgery. Verify digital identities and detect impersonation attempts.</div>
+        <div class="pg-mission__lvl">LVL 5</div>
+        {% if agent_level < 5 %}
+        <div class="pg-mission__locked">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5a8a5a" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <div class="pg-mission__locked-txt">REACH LVL 5 TO UNLOCK</div>
+        </div>
+        {% endif %}
+      </a>
+
+      <a class="pg-mission pg-mission--red" href="#">
+        <div class="pg-mission__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="pg-mission__name">BADGE CRACK</div>
+        <div class="pg-mission__desc">Identify the imposter tokens. Crack the authentication chain before the mole gets through the gate.</div>
+        <div class="pg-mission__lvl">LVL 10</div>
+        {% if agent_level < 10 %}
+        <div class="pg-mission__locked">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5a8a5a" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <div class="pg-mission__locked-txt">REACH LVL 10 TO UNLOCK</div>
+        </div>
+        {% endif %}
+      </a>
+
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="pg-bottom">
+
+      <div class="pg-activity">
+        <div class="pg-activity__title">RECENT ACTIVITY LOG</div>
+        {% if recent_activity %}
+          {% for item in recent_activity %}
+          <div class="pg-activity__item">
+            <div class="pg-activity__dot pg-activity__dot--{{ item.color }}"></div>
+            <div class="pg-activity__msg">{{ item.message }}</div>
+            <div class="pg-activity__time">{{ item.time }}</div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="pg-activity__item">
+            <div class="pg-activity__dot pg-activity__dot--green"></div>
+            <div class="pg-activity__msg">Agent account activated. Welcome to PhishGuard.</div>
+            <div class="pg-activity__time">NOW</div>
+          </div>
+          <div class="pg-activity__item">
+            <div class="pg-activity__dot pg-activity__dot--cyan"></div>
+            <div class="pg-activity__msg">No missions completed yet. Start with EMAIL DETECTOR.</div>
+            <div class="pg-activity__time">—</div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="pg-status">
+        <div class="pg-status__title">AGENT STATUS</div>
+        <div class="pg-status__row">
+          <span class="pg-status__key">CODENAME</span>
+          <span class="pg-status__val pg-status__val--green">{{ username|upper|default:"—" }}</span>
+        </div>
+        <div class="pg-status__row">
+          <span class="pg-status__key">CLEARANCE</span>
+          <span class="pg-status__val pg-status__val--cyan">{{ role|upper|default:"PLAYER" }}</span>
+        </div>
+        <div class="pg-status__row">
+          <span class="pg-status__key">STATUS</span>
+          <span class="pg-status__val pg-status__val--green">● ONLINE</span>
+        </div>
+        <div class="pg-status__row">
+          <span class="pg-status__key">MISSIONS DONE</span>
+          <span class="pg-status__val">{{ missions_completed|default:"0" }}</span>
+        </div>
+        <div class="pg-status__row">
+          <span class="pg-status__key">TOTAL SCORE</span>
+          <span class="pg-status__val pg-status__val--yellow">{{ total_score|default:"0" }} PTS</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.2rem;">
+          <div class="pg-status__bar-wrap">
+            <div class="pg-status__bar-label">
+              <span class="pg-status__bar-key">DETECTION SKILL</span>
+              <span class="pg-status__bar-pct">{{ detection_skill|default:"0" }}%</span>
+            </div>
+            <div class="pg-status__bar-track">
+              <div class="pg-status__bar-fill" style="width:{{ detection_skill|default:'0' }}%"></div>
+            </div>
+          </div>
+          <div class="pg-status__bar-wrap">
+            <div class="pg-status__bar-label">
+              <span class="pg-status__bar-key">SPEED RATING</span>
+              <span class="pg-status__bar-pct">{{ speed_rating|default:"0" }}%</span>
+            </div>
+            <div class="pg-status__bar-track">
+              <div class="pg-status__bar-fill" style="width:{{ speed_rating|default:'0' }}%;background:linear-gradient(90deg,#00b8cc,#00e5ff);box-shadow:0 0 7px rgba(0,229,255,.5);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      var fill = document.getElementById('xpFill');
+      if (fill) {
+        var target = fill.style.width;
+        fill.style.width = '0%';
+        setTimeout(function () { fill.style.width = target; }, 350);
+      }
+    });
+  </script>
+
 </body>
 </html>

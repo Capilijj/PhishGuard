@@ -7,8 +7,42 @@
   <title>PhishGuard — Email Verification</title>
   <link rel="stylesheet" href="{% static 'Login/login.css' %}"/>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    .pg-corner { border-color: rgba(0,255,65,.5) !important; }
+
+    .pg-info-box {
+      padding: 1rem 1.2rem;
+      margin: 0 0 1.2rem;
+      font-family: var(--pg-font-mono);
+      font-size: .75rem;
+      line-height: 1.8;
+      letter-spacing: .03em;
+    }
+    .pg-info-box--green {
+      background: rgba(0,255,65,.04);
+      border: 1px solid var(--pg-border);
+      border-left: 3px solid var(--pg-green);
+      color: var(--pg-text);
+    }
+    .pg-info-box--red {
+      background: rgba(255,59,59,.04);
+      border: 1px solid rgba(255,59,59,.2);
+      border-left: 3px solid var(--pg-red);
+      color: var(--pg-text);
+    }
+
+    .pg-status-icon {
+      text-align: center;
+      margin: 1.2rem 0 1rem;
+    }
+
+    .pg-btn--link {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+    }
+  </style>
   {% if status == 'success' %}
-  <!-- Auto-redirect to login after 5 seconds on success -->
   <meta http-equiv="refresh" content="5;url={% url 'login' %}?message=ACCOUNT+VERIFIED.+Welcome+aboard+Agent."/>
   {% endif %}
 </head>
@@ -24,6 +58,7 @@
       <span class="pg-corner pg-corner--bl"></span>
       <span class="pg-corner pg-corner--br"></span>
 
+      <!-- Title -->
       <div class="pg-logo">
         <h1 class="pg-logo__title pg-logo__title--sm">
           {% if status == 'success' %}IDENTITY CONFIRMED{% else %}VERIFICATION FAILED{% endif %}
@@ -34,7 +69,7 @@
       </div>
 
       <!-- Status icon -->
-      <div style="text-align:center; margin: 1.5rem 0 1rem;">
+      <div class="pg-status-icon">
         {% if status == 'success' %}
         <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24"
           fill="none" stroke="var(--pg-green)" stroke-width="1.5"
@@ -47,7 +82,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24"
           fill="none" stroke="var(--pg-red)" stroke-width="1.5"
           stroke-linecap="round" stroke-linejoin="round"
-          style="filter: drop-shadow(0 0 10px rgba(255,59,59,.5));">
+          style="filter: drop-shadow(0 0 10px rgba(255,59,59,.6));">
           <circle cx="12" cy="12" r="10"/>
           <path d="m15 9-6 6M9 9l6 6"/>
         </svg>
@@ -55,56 +90,49 @@
       </div>
 
       {% if status == 'success' %}
-      <div class="pg-success" style="text-align:center; margin-bottom:1rem;">
-        ✔ {{ message }}
-      </div>
 
-      <div style="
-        background: rgba(0,255,65,.04);
-        border: 1px solid var(--pg-border);
-        border-left: 3px solid var(--pg-green);
-        padding: 1rem 1.2rem;
-        margin: 0 0 1.4rem;
-        font-family: var(--pg-font-mono);
-        font-size: .75rem;
-        color: var(--pg-text);
-        line-height: 1.8;
-      ">
-        Your agent account is now active and cleared for entry.<br/>
-        You will be redirected to the login terminal in
-        <span style="color:var(--pg-cyan);" id="countdown">5</span> seconds.
-      </div>
+        <!-- SUCCESS STATE -->
+        <div class="pg-success" style="text-align:center; margin-bottom:1rem;">
+          ✔ {{ message }}
+        </div>
 
-      <a href="{% url 'login' %}" class="pg-btn pg-btn--primary pg-btn--link">▶ PROCEED TO LOGIN</a>
+        <div class="pg-info-box pg-info-box--green">
+          Your agent account is now active and cleared for entry.<br/>
+          Redirecting to login terminal in
+          <span style="color:var(--pg-cyan); font-weight:600;" id="countdown">5</span> seconds.
+        </div>
+
+        <a href="{% url 'login' %}" class="pg-btn pg-btn--primary pg-btn--link">
+          ▶ PROCEED TO LOGIN
+        </a>
 
       {% else %}
-      <div class="pg-alert" style="text-align:center; margin-bottom:1rem;">
-        ⚡ {{ message }}
-      </div>
 
-      <div style="
-        background: rgba(255,59,59,.04);
-        border: 1px solid rgba(255,59,59,.2);
-        border-left: 3px solid var(--pg-red);
-        padding: 1rem 1.2rem;
-        margin: 0 0 1.4rem;
-        font-family: var(--pg-font-mono);
-        font-size: .75rem;
-        color: var(--pg-text);
-        line-height: 1.8;
-      ">
-        This can happen if the link has already been used,<br/>
-        has expired (links are valid for 24 hours), or is malformed.<br/><br/>
-        Request a new link below or contact your administrator.
-      </div>
+        <!-- FAILED STATE -->
+        <div class="pg-alert" style="text-align:center; margin-bottom:1rem;">
+          ⚡ {{ message }}
+        </div>
 
-      <a href="{% url 'verify_pending' %}" class="pg-btn pg-btn--outline" style="width:100%;margin-bottom:.6rem;">
-        ↺ REQUEST NEW VERIFICATION LINK
-      </a>
-      <a href="{% url 'register' %}" class="pg-btn pg-btn--outline pg-btn--link">+ CREATE NEW ACCOUNT</a>
+        <div class="pg-info-box pg-info-box--red">
+          This can happen if the link has already been used,
+          has expired <span style="color:var(--pg-red);">(links are valid for 24 hours)</span>,
+          or is malformed.<br/><br/>
+          Request a new verification link below or contact your administrator.
+        </div>
+
+        <a href="{% url 'verify_pending' %}" class="pg-btn pg-btn--outline pg-btn--link"
+           style="margin-bottom:.6rem;">
+          ↺ REQUEST NEW VERIFICATION LINK
+        </a>
+        <a href="{% url 'register' %}" class="pg-btn pg-btn--outline pg-btn--link"
+           style="margin-bottom:.6rem;">
+          + CREATE NEW ACCOUNT
+        </a>
+
       {% endif %}
 
-      <a href="{% url 'login' %}" class="pg-btn pg-btn--outline pg-btn--link" style="margin-top:.4rem;">
+      <a href="{% url 'login' %}" class="pg-btn pg-btn--outline pg-btn--link"
+         style="margin-top:.4rem;">
         ← BACK TO LOGIN
       </a>
 
@@ -113,9 +141,9 @@
 
   {% if status == 'success' %}
   <script>
-    var n   = 5;
-    var el  = document.getElementById('countdown');
-    var iv  = setInterval(function () {
+    var n  = 5;
+    var el = document.getElementById('countdown');
+    var iv = setInterval(function () {
       n--;
       if (el) el.textContent = n;
       if (n <= 0) {

@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhishGuard — Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{% static 'admin_panel/admin.css' %}"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="pg-scanlines"></div>
+  <div class="pg-grid"></div>
+
+  <!-- ══════════════ HEADER ══════════════ -->
+  <header class="pg-header">
+    <div class="pg-header__logo">
+      <div class="pg-header__logo-title">PHISHGUARD</div>
+      <div class="pg-header__logo-sub">ADMIN CONTROL</div>
+    </div>
+
+    <div class="pg-header__divider"></div>
+    <div class="pg-header__spacer"></div>
+
+    <a class="pg-header__back" href="{% url 'home' %}">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      BACK TO DASHBOARD
+    </a>
+
+    <div class="pg-header__divider"></div>
+
+    <div class="pg-header__agent">
+      <div class="pg-header__agent-avatar">
+        {{ username|slice:":1"|upper|default:"A" }}
+      </div>
+      <div>
+        <span class="pg-header__agent-name">{{ username|upper|default:"ADMIN" }}</span>
+        <span class="pg-header__agent-role">ADMIN</span>
+      </div>
+    </div>
+
+    <a class="pg-header__logout" href="{% url 'logout' %}">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      LOGOUT
+    </a>
+  </header>
+
+  <!-- ══════════════ LAYOUT ══════════════ -->
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__label">ADMIN PANEL</div>
+
+      <a class="admin-sidebar__link admin-sidebar__link--active" href="{% url 'admin_dashboard' %}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        DASHBOARD
+      </a>
+
+      <a class="admin-sidebar__link" href="#">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        USER MGMT
+      </a>
+
+      <a class="admin-sidebar__link" href="#">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+        PROMPT MGMT
+      </a>
+
+      <a class="admin-sidebar__link" href="#">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+        </svg>
+        THEMES
+      </a>
+
+      <div class="admin-sidebar__divider"></div>
+
+      <a class="admin-sidebar__link" href="#">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        INQUIRY MGMT
+      </a>
+
+      <a class="admin-sidebar__link" href="{% url 'admin_settings' %}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        SITE SETTINGS
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-content">
+
+      <div class="admin-page-title">ADMIN DASHBOARD</div>
+      <div class="admin-page-sub">System overview — {{ total_users|default:"0" }} agents registered</div>
+
+      <!-- OVERVIEW STATS -->
+      <div class="pg-section-label">OVERVIEW</div>
+      <div class="admin-stats">
+        <div class="admin-stat admin-stat--green">
+          <div class="admin-stat__value">{{ total_users|default:"0" }}</div>
+          <div class="admin-stat__label">TOTAL AGENTS</div>
+        </div>
+        <div class="admin-stat admin-stat--cyan">
+          <div class="admin-stat__value">{{ active_users|default:"0" }}</div>
+          <div class="admin-stat__label">ACTIVE TODAY</div>
+        </div>
+        <div class="admin-stat admin-stat--yellow">
+          <div class="admin-stat__value">{{ total_simulations|default:"0" }}</div>
+          <div class="admin-stat__label">SIMULATIONS RUN</div>
+        </div>
+        <div class="admin-stat admin-stat--red">
+          <div class="admin-stat__value">{{ open_inquiries|default:"0" }}</div>
+          <div class="admin-stat__label">OPEN INQUIRIES</div>
+        </div>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="pg-section-label">ANALYTICS</div>
+      <div class="admin-charts">
+        <!-- Bar Chart: Simulations per day -->
+        <div class="admin-chart-card">
+          <div class="admin-chart-card__title">SIMULATIONS THIS WEEK</div>
+          <canvas id="barChart" height="200"></canvas>
+        </div>
+        <!-- Line Chart: Agent registrations -->
+        <div class="admin-chart-card">
+          <div class="admin-chart-card__title">AGENT REGISTRATIONS</div>
+          <canvas id="lineChart" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- RECENT ACTIVITY -->
+      <div class="pg-section-label">RECENT ACTIVITY</div>
+      <div class="admin-table-card">
+        <div class="admin-table-card__title">
+          <span>LATEST AGENT ACTIONS</span>
+          <a href="#">VIEW ALL →</a>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>USER</th>
+              <th>ACTION</th>
+              <th>MISSION</th>
+              <th>RESULT</th>
+              <th>TIME</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if recent_activity %}
+              {% for row in recent_activity %}
+              <tr>
+                <td style="color:var(--pg-green);">{{ row.username }}</td>
+                <td>{{ row.action }}</td>
+                <td>{{ row.mission|default:"—" }}</td>
+                <td>
+                  {% if row.result == 'PASS' %}
+                    <span class="badge badge--green">PASS</span>
+                  {% elif row.result == 'FAIL' %}
+                    <span class="badge badge--red">FAIL</span>
+                  {% else %}
+                    <span class="badge badge--cyan">{{ row.result }}</span>
+                  {% endif %}
+                </td>
+                <td style="color:var(--pg-text-dim);">{{ row.time }}</td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="5" style="text-align:center;color:var(--pg-text-dim);padding:1.5rem;">
+                  No activity recorded yet.
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // ── Chart defaults ─────────────────────────────────────────
+    Chart.defaults.color          = '#8ab88a';
+    Chart.defaults.borderColor    = '#1e3a1e';
+    Chart.defaults.font.family    = "'Share Tech Mono', monospace";
+    Chart.defaults.font.size      = 10;
+
+    var GREEN  = '#00ff41';
+    var CYAN   = '#00e5ff';
+    var GLOW   = 'rgba(0,255,65,.15)';
+
+    // ── Bar Chart — Simulations per day ───────────────────────
+    var barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: {{ bar_labels|default:'["MON","TUE","WED","THU","FRI","SAT","SUN"]'|safe }},
+        datasets: [{
+          label: 'SIMULATIONS',
+          data:  {{ bar_data|default:'[0,0,0,0,0,0,0]'|safe }},
+          backgroundColor: 'rgba(0,255,65,.2)',
+          borderColor:     GREEN,
+          borderWidth:     1,
+          borderRadius:    2,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: '#1e3a1e' }, ticks: { color: '#5a8a5a' } },
+          y: { grid: { color: '#1e3a1e' }, ticks: { color: '#5a8a5a' }, beginAtZero: true }
+        }
+      }
+    });
+
+    // ── Line Chart — Registrations ─────────────────────────────
+    var lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: {{ line_labels|default:'["WK1","WK2","WK3","WK4"]'|safe }},
+        datasets: [{
+          label: 'REGISTRATIONS',
+          data:  {{ line_data|default:'[0,0,0,0]'|safe }},
+          borderColor:     CYAN,
+          backgroundColor: 'rgba(0,229,255,.08)',
+          borderWidth:     2,
+          pointBackgroundColor: CYAN,
+          pointRadius:     4,
+          tension:         .35,
+          fill:            true,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: '#1e3a1e' }, ticks: { color: '#5a8a5a' } },
+          y: { grid: { color: '#1e3a1e' }, ticks: { color: '#5a8a5a' }, beginAtZero: true }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

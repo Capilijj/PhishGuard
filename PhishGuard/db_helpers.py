@@ -103,6 +103,44 @@ def call_sp_register_agent(username, email, hashed_password, role='Player'):
         )
 
 
+def call_sp_reregister_agent(username, email, hashed_password):
+    """
+    Calls sp_ReRegisterAgent.
+    Used when email exists but account is unverified (is_active=0).
+    Updates credentials and resets for re-verification.
+    Raises on error (e.g. account already active, username taken).
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "EXEC sp_ReRegisterAgent "
+            "@p_username=%s, @p_email=%s, @p_password=%s",
+            [username, email, hashed_password]
+        )
+
+
+def get_unverified_user_by_email(email):
+    """
+    Returns user dict if email exists and is_active = 0.
+    Returns None if email doesn't exist or account is already active.
+    Used to detect expired-unverified accounts during registration.
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT id, username, is_active "
+            "FROM auth_user WHERE email = %s AND is_active = 0",
+            [email]
+        )
+        row = cursor.fetchone()
+
+    if row:
+        return {
+            'id':        row[0],
+            'username':  row[1],
+            'is_active': row[2],
+        }
+    return None
+
+
 def call_sp_check_email(email):
     with connection.cursor() as cursor:
         cursor.execute(

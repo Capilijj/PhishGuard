@@ -7,6 +7,33 @@
   <title>PhishGuard Agent Login</title>
   <link rel="stylesheet" href="{% static 'Login/login.css' %}"/>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* Corner brackets — softer */
+    .pg-corner { border-color: rgba(0,255,65,.5) !important; }
+    /* Logo image */
+    .pg-logo__img-wrap {
+      display: flex !important; justify-content: center !important;
+      align-items: center !important; width: 100% !important;
+      height: 100px !important; overflow: hidden !important;
+      margin-bottom: .6rem !important;
+    }
+    .pg-logo__img {
+      width: 90px !important; height: 90px !important;
+      max-width: 90px !important; max-height: 90px !important;
+      object-fit: contain !important; display: block !important;
+      mix-blend-mode: screen;
+      filter: none;
+      transition: filter .35s ease, transform .35s ease;
+    }
+    .pg-logo__img:hover {
+      filter: drop-shadow(0 0 14px rgba(0,255,65,1))
+              drop-shadow(0 0 32px rgba(0,255,65,.65))
+              drop-shadow(0 0 60px rgba(0,255,65,.3));
+      transform: scale(1.05);
+    }
+  </style>
+
+
 </head>
 <body>
 
@@ -22,11 +49,25 @@
 
       <!-- Logo -->
       <div class="pg-logo">
+
+        <!-- Logo image: uses DB URL if set by admin, else falls back to static file -->
+        <div class="pg-logo__img-wrap">
+          {% if site_logo_url %}
+            <img class="pg-logo__img"
+                 src="{{ site_logo_url }}"
+                 alt="PhishGuard Logo"/>
+          {% else %}
+            <img class="pg-logo__img"
+                 src="{% static 'images/Logo.png' %}"
+                 alt="PhishGuard Logo"/>
+          {% endif %}
+        </div>
+
         <h1 class="pg-logo__title">PHISHGUARD</h1>
         <p class="pg-logo__sub">Identify yourself, Agent.</p>
       </div>
 
-      <!-- Django login form -->
+      <!-- Login form -->
       <form class="pg-form" method="post" action="{% url 'login' %}" novalidate>
         {% csrf_token %}
 
@@ -69,7 +110,8 @@
             />
             <button type="button" class="pg-eye" id="togglePw" title="Show/Hide">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                 <circle cx="12" cy="12" r="3"/>
               </svg>

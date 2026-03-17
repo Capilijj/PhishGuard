@@ -1,5 +1,5 @@
 ﻿# =============================================================
-#  views.py
+#  PhishGuard/views.py
 #  Request → Response logic ONLY.
 #  No raw SQL, no send_mail, no token secrets here.
 #
@@ -23,8 +23,10 @@ from .db_helpers import (
     activate_user,
     update_user_password,
     call_sp_register_agent,
+    call_sp_reregister_agent,       # ← re-registration (expired token)
     call_sp_check_email,
     get_valid_token_row,
+    get_unverified_user_by_email,   # ← detect expired unverified account
     mark_token_used,
 )
 from .tokens import generate_and_store_token, generate_and_store_reset_token
@@ -89,9 +91,21 @@ def home_view(request):
 #  LOGIN
 # =============================================================
 
+def _redirect_by_role(role):
+    """
+    Returns the correct redirect based on user role.
+      superadmin → admin_dashboard
+      Others     → home
+    """
+    if role and role.lower() == 'superadmin':
+        return redirect('admin_dashboard')
+    return redirect('home')
+
+
 def login_view(request):
+    # Already logged in — send to correct destination
     if request.session.get('user_id'):
-        return redirect('home')
+        return _redirect_by_role(request.session.get('role', ''))
 
     error   = ''
     message = request.GET.get('message', '')
@@ -122,18 +136,39 @@ def login_view(request):
                     request.session['user_id']  = user['id']
                     request.session['username'] = user['username']
                     request.session['role']     = user['role']
-                    return redirect('home')
+                    # ── Route by role ──────────────────────────
+                    return _redirect_by_role(user['role'])
                 else:
                     error = 'ACCESS DENIED: Incorrect security code.'
 
+    # Pull logo URL from site_settings (graceful fallback)
+    try:
+        from media_manager.db_helpers import get_site_setting
+        site_logo_url = get_site_setting('site_logo_url') or ''
+    except Exception:
+        site_logo_url = ''
+
     return render(request, 'Login/Login.html', {
-        'error':   error,
-        'message': message,
+        'error':         error,
+        'message':       message,
+        'site_logo_url': site_logo_url,
     })
 
 
 # =============================================================
 #  REGISTER
+#  
+#    Flow:                                                  
+#    1. Validate fields                                     
+#    2. Check codename uniqueness                           
+#    3. Check email — THREE cases:                         
+#       a) Email not in DB        → normal registration     
+#       b) Email exists, inactive → re-registration        
+#          (user's 24hr token expired, allow retry)         
+#       c) Email exists, active   → block, already verified 
+#    4. Generate token + send verification email            
+#    5. Redirect to verify/pending                          
+#  
 # =============================================================
 
 def register_view(request):
@@ -148,60 +183,87 @@ def register_view(request):
 
         form_data = {'new_agent': username, 'new_email': email}
 
+        # ── [1] FIELD VALIDATION ───────────────────────────────
         if not username:
             return render(request, 'Login/Register.html', {
                 'error': 'SECURITY ERROR: Codename is required.',
                 'form_data': form_data,
             })
-
         if len(username) < 3:
             return render(request, 'Login/Register.html', {
                 'error': 'SECURITY ERROR: Codename must be at least 3 characters.',
                 'form_data': form_data,
             })
-
         if not email or '@' not in email:
             return render(request, 'Login/Register.html', {
                 'error': 'SECURITY ERROR: A valid email address is required.',
                 'form_data': form_data,
             })
-
         if not password or len(password) < 8:
             return render(request, 'Login/Register.html', {
                 'error': 'SECURITY ERROR: Security code must be at least 8 characters.',
                 'form_data': form_data,
             })
-
         if password != confirm_password:
             return render(request, 'Login/Register.html', {
                 'error': 'SECURITY ERROR: Security codes do not match.',
                 'form_data': form_data,
             })
 
+        # ── [2] CODENAME UNIQUENESS CHECK ──────────────────────
         if get_user_by_username(username):
             return render(request, 'Login/Register.html', {
                 'error': 'CREATE ACCOUNT FAILED: Codename already active in the system.',
                 'form_data': form_data,
             })
 
-        if call_sp_check_email(email):
+        # ── [3] EMAIL CHECK ────────────────────────────────────
+        #
+        #  Case A: email not in DB        → normal registration
+        #  Case B: email exists, inactive → re-registration
+        #                                   (24hr token expired, allow retry)
+        #  Case C: email exists, active   → block (already verified)
+        #
+        unverified   = get_unverified_user_by_email(email)  # Case B check
+        active_check = call_sp_check_email(email)           # Case C check
+
+        if active_check:
+            # ── Case C: already verified — block ──────────────
             return render(request, 'Login/Register.html', {
                 'error': 'CREATE ACCOUNT FAILED: Email already registered to another agent.',
                 'form_data': form_data,
             })
 
         try:
-            call_sp_register_agent(username, email, make_password(password))
-            user  = get_user_by_username(username)
+            hashed = make_password(password)
+
+            if unverified:
+                # ── Case B: RE-REGISTRATION ────────────────────
+                # Email exists but never verified (token expired).
+                # Update credentials and re-send verification.
+                call_sp_reregister_agent(username, email, hashed)
+                user = get_user_by_username(username)
+
+            else:
+                # ── Case A: NORMAL REGISTRATION ────────────────
+                # Brand new email — create fresh account.
+                call_sp_register_agent(username, email, hashed)
+                user = get_user_by_username(username)
+
+            # ── [4] GENERATE TOKEN + SEND EMAIL ───────────────
             token = generate_and_store_token(user['id'])
             send_verification_email(request, email, username, token)
+
+            # ── [5] REDIRECT TO PENDING PAGE ──────────────────
             return redirect(f'/verify/pending/?email={email}')
 
         except Exception as e:
             print(f'[register_view ERROR] {e}')
-            err_msg = str(e)
+            err_msg = str(e).lower()
 
             if 'already active' in err_msg:
+                error = 'CREATE ACCOUNT FAILED: Email already verified. Please log in.'
+            elif 'already active in the system' in err_msg:
                 error = 'CREATE ACCOUNT FAILED: Codename already active in the system.'
             elif 'already registered' in err_msg:
                 error = 'CREATE ACCOUNT FAILED: Email already registered to another agent.'
@@ -319,12 +381,10 @@ def forgot_password_view(request):
             return render(request, 'Login/ForgotPassword.html', {
                 'error': 'FIELD ERROR: Email address is required.',
             })
-
         if '@' not in email or '.' not in email.split('@')[-1]:
             return render(request, 'Login/ForgotPassword.html', {
                 'error': 'FIELD ERROR: Enter a valid email address.',
             })
-
         if not is_valid_email_domain(email):
             return render(request, 'Login/ForgotPassword.html', {
                 'error': 'FIELD ERROR: Email domain does not exist. Use a real email address.',
@@ -435,7 +495,6 @@ def reset_password_view(request):
                 'token':  token,
                 'error':  'SECURITY ERROR: Password must be at least 8 characters.',
             })
-
         if password != confirm_password:
             return render(request, 'Login/ResetPassword.html', {
                 'status': 'form',

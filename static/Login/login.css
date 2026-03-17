@@ -89,11 +89,11 @@ html, body {
 .pg-panel {
   position: relative;
   background: var(--pg-panel);
-  border: 1.5px solid var(--pg-green);
+  border: 1px solid rgba(0,255,65,.4);
   box-shadow:
-    0 0 22px var(--pg-green-glow),
-    0 0 70px rgba(0,255,65,.06),
-    inset 0 0 28px rgba(0,255,65,.025);
+    0 0 10px rgba(0,255,65,.1),
+    0 0 35px rgba(0,255,65,.04),
+    inset 0 0 16px rgba(0,255,65,.012);
   padding: 2rem 2.2rem 2rem;
   width: 100%;
   max-width: 460px;
@@ -565,7 +565,7 @@ html, body {
 .tos-modal {
   position: relative;
   background: var(--pg-panel);
-  border: 1.5px solid var(--pg-green);
+  border: 1px solid rgba(0,255,65,.4);
   box-shadow:
     0 0 30px var(--pg-green-glow),
     0 0 80px rgba(0,255,65,.06),
@@ -876,4 +876,30 @@ html, body {
   .pg-main  { padding: 1rem; }
   .pg-panel { padding: 1.4rem 1rem; }
   .pg-logo__title { font-size: 1.5rem; }
+}
+/* ── Logo image ──────────────────────────────────── */
+.pg-logo__img-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: .6rem;
+}
+
+.pg-logo__img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  /* screen blend removes black bg —
+     only bright neon green parts stay visible */
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 12px rgba(0,255,65,.85))
+          drop-shadow(0 0 28px rgba(0,255,65,.45))
+          drop-shadow(0 0 52px rgba(0,255,65,.2));
+  transition: filter .35s ease;
+}
+
+.pg-logo__img:hover {
+  filter: drop-shadow(0 0 18px rgba(0,255,65,1))
+          drop-shadow(0 0 42px rgba(0,255,65,.65))
+          drop-shadow(0 0 70px rgba(0,255,65,.3));
 }

@@ -6,7 +6,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-# Load .env file
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +19,14 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # ── Applications ──────────────────────────────────────────────
 INSTALLED_APPS = [
-    'django.contrib.sessions',      # needed for request.session
-    'django.contrib.messages',      # needed for template messages
-    'django.contrib.staticfiles',   # needed for static files (css/js)
-   
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    # PhishGuard apps
+    'homepage',
+    'admin_panel',
+    'media_manager',
 ]
 
 # ── Middleware ─────────────────────────────────────────────────
@@ -74,36 +77,39 @@ DATABASES = {
 
 # ── Internationalization ───────────────────────────────────────
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
+TIME_ZONE     = 'UTC'
+USE_I18N      = True
+USE_TZ        = True
 
 
 # ── Static files ───────────────────────────────────────────────
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATIC_URL       = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+
+# ── Media files ────────────────────────────────────────────────
+MEDIA_URL  = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # ── Session ────────────────────────────────────────────────────
 SESSION_ENGINE               = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_AGE           = 1209600  # 2 weeks in seconds
+SESSION_COOKIE_AGE           = 1209600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-# ── Security — HTTPS ───────────────────────────────────────────
-SESSION_COOKIE_SECURE        = False  # Set True in production (HTTPS only)
-CSRF_COOKIE_SECURE           = False  # Set True in production (HTTPS only)
-SECURE_BROWSER_XSS_FILTER    = True
-SECURE_CONTENT_TYPE_NOSNIFF  = True
+
+# ── Security ───────────────────────────────────────────────────
+SESSION_COOKIE_SECURE       = False
+CSRF_COOKIE_SECURE          = False
+SECURE_BROWSER_XSS_FILTER   = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 
 # ── Email — Gmail SMTP ─────────────────────────────────────────
-# Credentials are loaded from .env file — never hardcode here!
-EMAIL_BACKEND           = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST              = 'smtp.gmail.com'
-EMAIL_PORT              = 587
-EMAIL_USE_TLS           = True
-EMAIL_HOST_USER         = os.getenv('EMAIL_HOST_USER')      # from .env
-EMAIL_HOST_PASSWORD     = os.getenv('EMAIL_HOST_PASSWORD')  # from .env
-DEFAULT_FROM_EMAIL      = f'PhishGuard <{os.getenv("EMAIL_HOST_USER")}>'
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST          = 'smtp.gmail.com'
+EMAIL_PORT          = 587
+EMAIL_USE_TLS       = True
+EMAIL_HOST_USER     = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL  = f'PhishGuard <{os.getenv("EMAIL_HOST_USER")}>'
