@@ -1,7 +1,5 @@
 /* ===================================================
    PHISHGUARD — register.js
-   Handles: Register / Create Account page only
-   Features: Real-time codename check + suggestions
    =================================================== */
 (function () {
   'use strict';

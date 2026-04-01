@@ -1,7 +1,5 @@
 /* ===================================================
    PHISHGUARD — forgot.js
-   Handles: Forgot Password page only
-   Features: Real-time email typo detection
    =================================================== */
 (function () {
   'use strict';
