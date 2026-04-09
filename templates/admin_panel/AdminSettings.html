@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Settings | PhishGuard</title>
+  <link rel="stylesheet" href="{% static 'admin_panel/admin.css' %}" />
+</head>
+<body>
+  <div class="admin-page-shell">
+    <header class="pg-header">
+      <div class="pg-header__logo">
+        <div class="pg-header__logo-title">PHISHGUARD</div>
+        <div class="pg-header__logo-sub">ADMIN CONTROL</div>
+      </div>
+      <a class="pg-header__logout" href="{% url 'logout' %}">LOGOUT</a>
+    </header>
+
+    <main class="admin-content">
+      <div class="admin-page-title">SITE SETTINGS</div>
+      <div class="admin-page-sub">Configuration panel placeholder.</div>
+      <div class="admin-card admin-card--wide">
+        <p>This page is under construction. Add site settings administration here.</p>
+        <p><a href="{% url 'admin_dashboard' %}">Back to dashboard</a></p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

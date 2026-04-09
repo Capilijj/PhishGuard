@@ -1,0 +1,435 @@
+/* ===================================================
+   PHISHGUARD — register.css
+   Styles for Register.html
+   =================================================== */
+
+/* ── Password strength ──────────────────────────── */
+.pg-strength {
+  margin: -.3rem 0 .9rem;
+}
+
+.pg-strength__label {
+  font-size: .65rem;
+  color: var(--pg-text);
+  letter-spacing: .1em;
+  margin-bottom: .28rem;
+}
+
+.pg-strength__label span { color: var(--pg-green); }
+
+.pg-strength__bar {
+  height: 3px;
+  background: #1e3d24;
+  border: 1px solid var(--pg-border);
+  overflow: hidden;
+}
+
+.pg-strength__fill {
+  height: 100%;
+  width: 0%;
+  background: var(--pg-red);
+  transition: width .35s ease, background .35s ease;
+}
+
+/* ── Codename suggestions box ───────────────────── */
+.pg-suggestions {
+  display: none;
+  margin-top: .4rem;
+  padding: .6rem .75rem;
+  background: rgba(0,255,65,.04);
+  border: 1px solid var(--pg-border);
+}
+
+.pg-suggest-label {
+  display: block;
+  font-size: .58rem;
+  color: var(--pg-text-dim);
+  letter-spacing: .12em;
+  margin-bottom: .5rem;
+}
+
+.pg-suggest-btn {
+  display: inline-block;
+  margin: .2rem .3rem .2rem 0;
+  padding: .3rem .7rem;
+  background: transparent;
+  border: 1px solid var(--pg-green-mid);
+  color: var(--pg-green-mid);
+  font-family: var(--pg-font-mono);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: all var(--pg-ease);
+}
+
+.pg-suggest-btn:hover {
+  background: var(--pg-green);
+  color: #000;
+  border-color: var(--pg-green);
+}
+
+/* ── Terms checkbox row ─────────────────────────── */
+.pg-field--terms {
+  margin-bottom: .8rem !important;
+}
+
+.pg-terms-check {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  cursor: pointer;
+}
+
+.pg-terms-check input[type="checkbox"] {
+  display: none;
+}
+
+.pg-check-box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--pg-border);
+  background: #050e07;
+  flex-shrink: 0;
+  margin-top: .15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s ease;
+}
+
+.pg-terms-check input:checked ~ .pg-check-box {
+  background: var(--pg-green);
+  border-color: var(--pg-green);
+  box-shadow: 0 0 8px var(--pg-green-glow);
+}
+
+.pg-terms-check input:checked ~ .pg-check-box::after {
+  content: '✔';
+  font-size: .55rem;
+  color: #000;
+  font-weight: 900;
+}
+
+.pg-check-label {
+  font-family: var(--pg-font-mono);
+  font-size: .65rem;
+  color: var(--pg-text-dim);
+  letter-spacing: .06em;
+  line-height: 1.6;
+}
+
+.pg-terms-link {
+  background: none;
+  border: none;
+  color: var(--pg-cyan);
+  font-family: var(--pg-font-mono);
+  font-size: .65rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color .2s ease, text-shadow .2s ease;
+}
+
+.pg-terms-link:hover {
+  color: var(--pg-green);
+  text-shadow: 0 0 6px var(--pg-green-glow);
+}
+
+/* ══════════════════════════════════════════════════
+   TERMS OF SERVICE MODAL
+   ══════════════════════════════════════════════════ */
+
+/* ── Overlay ────────────────────────────────────── */
+.tos-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(3px);
+  animation: tosFadeIn .25s ease;
+}
+
+.tos-overlay.active {
+  display: flex;
+}
+
+@keyframes tosFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal X close button ───────────────────────── */
+.tos-close {
+  position: absolute;
+  top: .7rem;
+  right: .8rem;
+  background: none;
+  border: 1px solid var(--pg-border);
+  color: var(--pg-text-dim);
+  font-family: var(--pg-font-mono);
+  font-size: .8rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all .2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.tos-close:hover {
+  background: var(--pg-red);
+  border-color: var(--pg-red);
+  color: #fff;
+  box-shadow: 0 0 10px var(--pg-red-glow);
+}
+
+/* ── Modal box ──────────────────────────────────── */
+.tos-modal {
+  position: relative;
+  background: var(--pg-panel);
+  border: 1px solid rgba(0,255,65,.4);
+  box-shadow:
+    0 0 30px var(--pg-green-glow),
+    0 0 80px rgba(0,255,65,.06),
+    inset 0 0 30px rgba(0,255,65,.02);
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: tosSlideIn .3s ease;
+}
+
+@keyframes tosSlideIn {
+  from { transform: translateY(20px) scale(.97); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* ── Modal header ───────────────────────────────── */
+.tos-header {
+  text-align: center;
+  padding: 1.8rem 2rem 1.2rem;
+  border-bottom: 1px solid var(--pg-border);
+  flex-shrink: 0;
+}
+
+.tos-logo {
+  font-family: var(--pg-font-display);
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--pg-green);
+  letter-spacing: .35em;
+  text-shadow: 0 0 10px var(--pg-green), 0 0 25px var(--pg-green-glow);
+  margin-bottom: .2rem;
+}
+
+.tos-doc-tag {
+  font-size: .55rem;
+  color: var(--pg-red);
+  letter-spacing: .14em;
+  margin-bottom: .7rem;
+}
+
+.tos-title {
+  font-family: var(--pg-font-display);
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--pg-text);
+  letter-spacing: .22em;
+  margin-bottom: .3rem;
+}
+
+.tos-subtitle {
+  font-family: var(--pg-font-body);
+  font-size: .78rem;
+  color: var(--pg-text-dim);
+  letter-spacing: .08em;
+}
+
+/* ── Modal body (scrollable) ────────────────────── */
+.tos-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pg-border) var(--pg-bg);
+}
+
+.tos-body::-webkit-scrollbar       { width: 4px; }
+.tos-body::-webkit-scrollbar-track { background: var(--pg-bg); }
+.tos-body::-webkit-scrollbar-thumb { background: var(--pg-border); }
+.tos-body::-webkit-scrollbar-thumb:hover { background: var(--pg-green-mid); }
+
+/* ── Sections ───────────────────────────────────── */
+.tos-section {
+  display: flex;
+  gap: 1rem;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid rgba(0,255,65,.06);
+  transition: background .2s ease;
+}
+
+.tos-section:hover {
+  background: rgba(0,255,65,.02);
+}
+
+.tos-num {
+  font-family: var(--pg-font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: rgba(0,255,65,.12);
+  flex-shrink: 0;
+  width: 36px;
+  line-height: 1.1;
+}
+
+.tos-content { flex: 1; }
+
+.tos-section-title {
+  font-family: var(--pg-font-display);
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--pg-green);
+  letter-spacing: .2em;
+  margin-bottom: .6rem;
+}
+
+.tos-text {
+  font-family: var(--pg-font-mono);
+  font-size: .68rem;
+  color: var(--pg-text);
+  line-height: 1.8;
+  letter-spacing: .02em;
+  margin-bottom: .6rem;
+}
+
+.tos-text:last-child { margin-bottom: 0; }
+
+/* ── Lists ──────────────────────────────────────── */
+.tos-list {
+  list-style: none;
+  margin: .4rem 0 .6rem;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.tos-list li {
+  font-family: var(--pg-font-mono);
+  font-size: .67rem;
+  color: var(--pg-text);
+  line-height: 1.7;
+  letter-spacing: .02em;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.tos-list li::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  color: var(--pg-green-mid);
+  font-size: .45rem;
+  top: .38rem;
+}
+
+.tos-list--red li::before {
+  content: '✗';
+  color: var(--pg-red);
+  font-size: .6rem;
+  top: .28rem;
+}
+
+/* ── Tags ───────────────────────────────────────── */
+.tos-tag {
+  color: var(--pg-cyan);
+  font-size: .6rem;
+  letter-spacing: .1em;
+  font-weight: 600;
+}
+
+/* ── Highlight ──────────────────────────────────── */
+.tos-highlight {
+  background: rgba(255,85,85,.05);
+  border: 1px solid rgba(255,85,85,.2);
+  border-left: 3px solid var(--pg-red);
+  padding: .6rem .9rem;
+  font-family: var(--pg-font-mono);
+  font-size: .67rem;
+  color: var(--pg-text);
+  line-height: 1.7;
+  margin: .6rem 0;
+}
+
+.tos-highlight--green {
+  background: rgba(0,255,65,.04);
+  border-color: var(--pg-border);
+  border-left-color: var(--pg-green);
+}
+
+/* ── Modal footer ───────────────────────────────── */
+.tos-footer {
+  padding: 1.2rem 2rem 1.5rem;
+  border-top: 1px solid var(--pg-border);
+  background: rgba(0,255,65,.02);
+  flex-shrink: 0;
+}
+
+.tos-footer-text {
+  font-family: var(--pg-font-mono);
+  font-size: .62rem;
+  color: var(--pg-text-dim);
+  line-height: 1.7;
+  text-align: center;
+  margin-bottom: 1rem;
+  letter-spacing: .03em;
+}
+
+.tos-actions {
+  display: flex;
+  gap: .8rem;
+  justify-content: center;
+}
+
+.tos-btn {
+  font-family: var(--pg-font-display);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  padding: .75rem 2rem;
+  border: none;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.tos-btn--accept {
+  background: var(--pg-green);
+  color: #000;
+  box-shadow: 0 0 14px var(--pg-green-glow);
+}
+
+.tos-btn--accept:hover {
+  background: #00e63a;
+  box-shadow: 0 0 28px rgba(0,255,65,.55);
+  transform: translateY(-1px);
+}
+
+.tos-btn--decline {
+  background: transparent;
+  color: var(--pg-text-dim);
+  border: 1px solid var(--pg-border);
+}
+
+.tos-btn--decline:hover {
+  border-color: var(--pg-red);
+  color: var(--pg-red);
+}

@@ -5,43 +5,9 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PhishGuard — Email Verification</title>
-  <link rel="stylesheet" href="{% static 'Login/login.css' %}"/>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
-  <style>
-    .pg-corner { border-color: rgba(0,255,65,.5) !important; }
-
-    .pg-info-box {
-      padding: 1rem 1.2rem;
-      margin: 0 0 1.2rem;
-      font-family: var(--pg-font-mono);
-      font-size: .75rem;
-      line-height: 1.8;
-      letter-spacing: .03em;
-    }
-    .pg-info-box--green {
-      background: rgba(0,255,65,.04);
-      border: 1px solid var(--pg-border);
-      border-left: 3px solid var(--pg-green);
-      color: var(--pg-text);
-    }
-    .pg-info-box--red {
-      background: rgba(255,59,59,.04);
-      border: 1px solid rgba(255,59,59,.2);
-      border-left: 3px solid var(--pg-red);
-      color: var(--pg-text);
-    }
-
-    .pg-status-icon {
-      text-align: center;
-      margin: 1.2rem 0 1rem;
-    }
-
-    .pg-btn--link {
-      display: block;
-      text-align: center;
-      text-decoration: none;
-    }
-  </style>
+  <link rel="stylesheet" href="{% static 'Login/base.css' %}"/>
+  <link rel="stylesheet" href="{% static 'Login/verify.css' %}"/>
   {% if status == 'success' %}
   <meta http-equiv="refresh" content="5;url={% url 'login' %}?message=ACCOUNT+VERIFIED.+Welcome+aboard+Agent."/>
   {% endif %}
@@ -99,7 +65,9 @@
         <div class="pg-info-box pg-info-box--green">
           Your agent account is now active and cleared for entry.<br/>
           Redirecting to login terminal in
-          <span style="color:var(--pg-cyan); font-weight:600;" id="countdown">5</span> seconds.
+          <span style="color:var(--pg-cyan); font-weight:600;"
+                id="countdown"
+                data-redirect="{% url 'login' %}?message=ACCOUNT+VERIFIED.+Welcome+aboard+Agent.">5</span> seconds.
         </div>
 
         <a href="{% url 'login' %}" class="pg-btn pg-btn--primary pg-btn--link">
@@ -139,20 +107,6 @@
     </div>
   </main>
 
-  {% if status == 'success' %}
-  <script>
-    var n  = 5;
-    var el = document.getElementById('countdown');
-    var iv = setInterval(function () {
-      n--;
-      if (el) el.textContent = n;
-      if (n <= 0) {
-        clearInterval(iv);
-        window.location.href = "{% url 'login' %}?message=ACCOUNT+VERIFIED.+Welcome+aboard+Agent.";
-      }
-    }, 1000);
-  </script>
-  {% endif %}
-
+  <script src="{% static 'Login/verify.js' %}"></script>
 </body>
 </html>

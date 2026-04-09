@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     # PhishGuard apps
     'homepage',
     'admin_panel',
-    'media_manager',
 ]
 
 # ── Middleware ─────────────────────────────────────────────────

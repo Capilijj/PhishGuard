@@ -12,6 +12,7 @@
 import random
 
 from django.shortcuts import render, redirect
+from django.templatetags.static import static
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -140,14 +141,7 @@ def login_view(request):
                     return _redirect_by_role(user['role'])
                 else:
                     error = 'ACCESS DENIED: Incorrect security code.'
-
-    # Pull logo URL from site_settings (graceful fallback)
-    try:
-        from media_manager.db_helpers import get_site_setting
-        site_logo_url = get_site_setting('site_logo_url') or ''
-    except Exception:
-        site_logo_url = ''
-
+    site_logo_url = static('images/Logo.png')
     return render(request, 'Login/Login.html', {
         'error':         error,
         'message':       message,

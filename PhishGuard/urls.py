@@ -39,6 +39,4 @@ urlpatterns = [
     # ── Apps ───────────────────────────────────────────────────
     path('',            include('homepage.urls')),
     path('admin/',      include('admin_panel.urls')),
-    path('media-admin/',include('media_manager.urls')),
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

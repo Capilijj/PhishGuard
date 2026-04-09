@@ -1,0 +1,44 @@
+/* ===================================================
+   PHISHGUARD — verify.css
+   Styles for VerifyEmail.html and VerifyPending.html
+   =================================================== */
+
+/* ── Corner softening ───────────────────────────── */
+.pg-corner { border-color: rgba(0,255,65,.5); }
+
+/* ── Info boxes ─────────────────────────────────── */
+.pg-info-box {
+  padding: 1rem 1.2rem;
+  margin: 0 0 1.2rem;
+  font-family: var(--pg-font-mono);
+  font-size: .75rem;
+  line-height: 1.8;
+  letter-spacing: .03em;
+}
+
+.pg-info-box--green {
+  background: rgba(0,255,65,.04);
+  border: 1px solid var(--pg-border);
+  border-left: 3px solid var(--pg-green);
+  color: var(--pg-text);
+}
+
+.pg-info-box--red {
+  background: rgba(255,59,59,.04);
+  border: 1px solid rgba(255,59,59,.2);
+  border-left: 3px solid var(--pg-red);
+  color: var(--pg-text);
+}
+
+/* ── Status icon container ──────────────────────── */
+.pg-status-icon {
+  text-align: center;
+  margin: 1.2rem 0 1rem;
+}
+
+/* ── Link button display fix ────────────────────── */
+.pg-btn--link {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}

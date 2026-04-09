@@ -1,0 +1,391 @@
+/* ===================================================
+   PHISHGUARD — base.css
+   Shared foundation styles for all login-family pages
+   =================================================== */
+
+/* ── Variables ─────────────────────────────────── */
+:root {
+  --pg-green:        #00ff41;
+  --pg-green-mid:    #39ff6e;
+  --pg-green-dark:   #005c18;
+  --pg-green-glow:   rgba(0, 255, 65, 0.35);
+  --pg-green-faint:  rgba(0, 255, 65, 0.08);
+  --pg-red:          #ff5555;
+  --pg-red-glow:     rgba(255, 85, 85, 0.30);
+  --pg-cyan:         #44eeff;
+  --pg-bg:           #0e1a10;
+  --pg-panel:        #132016;
+  --pg-sidebar:      #0a1209;
+  --pg-border:       #2a6b38;
+  --pg-text:         #d4fce0;
+  --pg-text-dim:     #7ac489;
+  --pg-font-mono:    'Share Tech Mono', monospace;
+  --pg-font-display: 'Orbitron', sans-serif;
+  --pg-font-body:    'Rajdhani', sans-serif;
+  --pg-ease:         0.2s ease;
+  --pg-sidebar-w:    190px;
+}
+
+/* ── Reset ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: var(--pg-bg);
+  color: var(--pg-text);
+  font-family: var(--pg-font-mono);
+  overflow-x: hidden;
+}
+
+/* ── Background Effects ─────────────────────────── */
+.pg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,65,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,65,.06) 1px, transparent 1px);
+  background-size: 38px 38px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pg-scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.07) 2px,
+    rgba(0,0,0,.07) 4px
+  );
+  pointer-events: none;
+  z-index: 900;
+  animation: pgScan 10s linear infinite;
+}
+
+@keyframes pgScan {
+  from { background-position: 0 0; }
+  to   { background-position: 0 100vh; }
+}
+
+/* ── Main layout ────────────────────────────────── */
+.pg-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Panel (card) ───────────────────────────────── */
+.pg-panel {
+  position: relative;
+  background: var(--pg-panel);
+  border: 1px solid rgba(0,255,65,.4);
+  box-shadow:
+    0 0 10px rgba(0,255,65,.1),
+    0 0 35px rgba(0,255,65,.04),
+    inset 0 0 16px rgba(0,255,65,.012);
+  padding: 2rem 2.2rem 2rem;
+  width: 100%;
+  max-width: 460px;
+  animation: pgFadeIn .45s ease both;
+}
+
+.pg-panel--hidden {
+  display: none;
+}
+
+@keyframes pgFadeIn {
+  from { opacity: 0; transform: translateY(16px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Corner brackets */
+.pg-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-style: solid;
+  border-color: var(--pg-green);
+}
+.pg-corner--tl { top:-2px; left:-2px;   border-width: 2px 0 0 2px; }
+.pg-corner--tr { top:-2px; right:-2px;  border-width: 2px 2px 0 0; }
+.pg-corner--bl { bottom:-2px; left:-2px;  border-width: 0 0 2px 2px; }
+.pg-corner--br { bottom:-2px; right:-2px; border-width: 0 2px 2px 0; }
+
+/* ── Logo ───────────────────────────────────────── */
+.pg-logo {
+  text-align: center;
+  margin-bottom: 1.7rem;
+}
+
+.pg-logo__title {
+  font-family: var(--pg-font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--pg-green);
+  letter-spacing: .3em;
+  text-shadow: 0 0 10px var(--pg-green), 0 0 28px var(--pg-green-glow);
+  animation: pgGlitch 4s ease infinite;
+}
+
+.pg-logo__title--sm {
+  font-size: 1.5rem;
+  letter-spacing: .2em;
+}
+
+@keyframes pgGlitch {
+  0%,88%,100% {
+    text-shadow: 0 0 10px var(--pg-green), 0 0 28px var(--pg-green-glow);
+    transform: none;
+  }
+  90% { text-shadow: -2px 0 var(--pg-red), 2px 0 var(--pg-cyan); transform: skewX(-1deg); }
+  92% { text-shadow:  2px 0 var(--pg-red),-2px 0 var(--pg-cyan); transform: skewX(.8deg); }
+  94% { text-shadow: 0 0 10px var(--pg-green), 0 0 28px var(--pg-green-glow); transform: none; }
+}
+
+.pg-logo__sub {
+  font-family: var(--pg-font-body);
+  font-size: .9rem;
+  color: var(--pg-cyan);
+  letter-spacing: .18em;
+  margin-top: .3rem;
+}
+
+/* ── Alert (Django error) ───────────────────────── */
+.pg-alert {
+  background: rgba(255,59,59,.08);
+  border: 1px solid var(--pg-red);
+  color: var(--pg-red);
+  font-size: .72rem;
+  letter-spacing: .1em;
+  padding: .65rem .85rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ── Success message ────────────────────────────── */
+.pg-success {
+  background: rgba(0, 255, 65, 0.08);
+  border: 1px solid var(--pg-green);
+  color: var(--pg-green);
+  font-size: .72rem;
+  letter-spacing: .1em;
+  padding: .65rem .85rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ── Form ───────────────────────────────────────── */
+.pg-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.pg-field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .28rem;
+}
+
+.pg-label {
+  font-size: .7rem;
+  color: var(--pg-green-mid);
+  letter-spacing: .14em;
+  font-weight: 600;
+}
+
+.pg-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pg-input {
+  width: 100%;
+  background: #0e1f11;
+  border: 1px solid var(--pg-border);
+  color: var(--pg-green);
+  font-family: var(--pg-font-mono);
+  font-size: .92rem;
+  letter-spacing: .08em;
+  padding: .78rem 2.4rem .78rem .9rem;
+  outline: none;
+  transition: border-color var(--pg-ease), box-shadow var(--pg-ease);
+}
+
+.pg-input::placeholder {
+  color: #4a8a5a;
+  letter-spacing: .06em;
+}
+
+.pg-input:focus {
+  border-color: var(--pg-green);
+  box-shadow: 0 0 0 1px var(--pg-green), 0 0 10px var(--pg-green-glow);
+}
+
+.pg-input--error {
+  border-color: var(--pg-red) !important;
+  box-shadow: 0 0 0 1px var(--pg-red) !important;
+}
+
+.pg-input--available {
+  border-color: var(--pg-green) !important;
+  box-shadow: 0 0 0 1px var(--pg-green), 0 0 10px var(--pg-green-glow) !important;
+}
+
+.pg-field-err {
+  font-size: .65rem;
+  color: var(--pg-red);
+  letter-spacing: .07em;
+  min-height: .75rem;
+}
+
+/* Eye toggle */
+.pg-eye {
+  position: absolute;
+  right: .7rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--pg-text-dim);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color var(--pg-ease);
+}
+
+.pg-eye:hover { color: var(--pg-green); }
+
+/* ── Buttons ────────────────────────────────────── */
+.pg-btn {
+  width: 100%;
+  padding: .85rem;
+  font-family: var(--pg-font-display);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .24em;
+  cursor: pointer;
+  border: none;
+  transition: all var(--pg-ease);
+  margin-bottom: .65rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.pg-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  transition: opacity .12s;
+}
+
+.pg-btn:active::after { opacity: .06; }
+
+/* Primary — solid green */
+.pg-btn--primary {
+  background: var(--pg-green);
+  color: #000;
+  box-shadow: 0 0 14px var(--pg-green-glow), 0 0 3px var(--pg-green);
+}
+
+.pg-btn--primary:hover {
+  background: #00e63a;
+  box-shadow: 0 0 28px rgba(0,255,65,.55), 0 0 7px var(--pg-green);
+  transform: translateY(-1px);
+}
+
+.pg-btn--primary:active { transform: none; }
+
+/* Outline */
+.pg-btn--outline {
+  background: transparent;
+  color: var(--pg-green);
+  border: 1px solid var(--pg-green);
+}
+
+.pg-btn--outline:hover {
+  background: var(--pg-green-faint);
+  box-shadow: 0 0 10px var(--pg-green-glow);
+}
+
+/* Link-styled button (anchor tag acting as button) */
+.pg-btn--link {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1;
+}
+
+/* ── Warning footer ─────────────────────────────── */
+.pg-warning {
+  text-align: center;
+  font-size: .65rem;
+  color: var(--pg-red);
+  letter-spacing: .12em;
+  border-top: 1px solid #2e0808;
+  padding-top: .85rem;
+  margin-top: .1rem;
+}
+
+/* ── Toast ──────────────────────────────────────── */
+.pg-toast {
+  position: fixed;
+  bottom: 1.8rem;
+  right: 1.8rem;
+  background: var(--pg-panel);
+  border: 1px solid var(--pg-green);
+  color: var(--pg-green);
+  font-family: var(--pg-font-mono);
+  font-size: .7rem;
+  letter-spacing: .1em;
+  padding: .8rem 1.4rem;
+  box-shadow: 0 0 18px var(--pg-green-glow);
+  z-index: 999;
+  animation: pgToastIn .25s ease;
+  max-width: 320px;
+}
+
+.pg-toast--hidden { display: none !important; }
+
+.pg-toast--error {
+  border-color: var(--pg-red);
+  color: var(--pg-red);
+  box-shadow: 0 0 18px var(--pg-red-glow);
+}
+
+@keyframes pgToastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Info message ───────────────────────────────── */
+.pg-info-msg {
+  font-size: .7rem;
+  color: var(--pg-text);
+  letter-spacing: .06em;
+  text-align: center;
+  border: 1px solid var(--pg-border);
+  padding: .55rem .75rem;
+  background: var(--pg-green-faint);
+  margin-bottom: .9rem;
+  line-height: 1.6;
+}
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 500px) {
+  .pg-main  { padding: 1rem; }
+  .pg-panel { padding: 1.4rem 1rem; }
+  .pg-logo__title { font-size: 1.5rem; }
+}

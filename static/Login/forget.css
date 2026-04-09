@@ -1,0 +1,7 @@
+/* ===================================================
+   PHISHGUARD — forgot.css
+   Styles for ForgotPassword.html and ForgotPending.html
+   =================================================== */
+
+/* ── Corner softening (used on these pages) ─────── */
+.pg-corner { border-color: rgba(0,255,65,.5); }

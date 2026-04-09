@@ -4,7 +4,7 @@
 # =============================================================
 
 from django.shortcuts import render, redirect
-from media_manager.db_helpers import get_site_setting
+from django.templatetags.static import static
 
 
 def home_view(request):
@@ -23,12 +23,12 @@ def home_view(request):
     xp_next    = stats['xp_next']
     xp_percent = round((xp_current / xp_next) * 100, 1) if xp_next else 0
 
-    # Pull site logo from site_settings table
-    site_logo_url = get_site_setting('site_logo_url') or ''
+    site_logo_url = static('images/Logo.png')
 
     context = {
         'username':           username,
         'role':               role,
+        'profile_image':      'images/default_profile.png',
         'site_logo_url':      site_logo_url,
 
         # Level / XP

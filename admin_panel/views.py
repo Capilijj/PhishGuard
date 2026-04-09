@@ -71,6 +71,15 @@ def admin_dashboard_view(request):
     return response
 
 
+@admin_required
+def admin_settings_view(request):
+    """Site settings placeholder page."""
+    return render(request, 'admin_panel/AdminSettings.html', {
+        'username': request.session.get('username', 'ADMIN'),
+        'role':     request.session.get('role', 'Admin'),
+    })
+
+
 def _get_placeholder_admin_stats():
     """Safe defaults — replace with real DB calls."""
     return {
